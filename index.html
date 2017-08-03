@@ -1,10 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Udacity Google Maps API</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
+    <div id="map"></div>
+
     
+    <!--config.js contains api key in the following format:-->
+    <!--var htmlString = '<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOURAPIKEY&v=3&callback=initMap"></script>';-->
+
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    
+<script>
+    /*global htmlString*/
+    document.write(htmlString);
+</script>
+
 </body>
 </html>
+
+
