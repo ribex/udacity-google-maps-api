@@ -6,11 +6,118 @@ var map;
 var markers = [];
 
 function initMap() {
+    // Create a styles array to use with the map
+    var styles = [
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#193341"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#2c5a71"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#29768a"
+            },
+            {
+                "lightness": -37
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#406d80"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#406d80"
+            }
+        ]
+    },
+    {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#3e606f"
+            },
+            {
+                "weight": 2
+            },
+            {
+                "gamma": 0.84
+            }
+        ]
+    },
+    {
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "weight": 0.6
+            },
+            {
+                "color": "#1a3541"
+            }
+        ]
+    },
+    {
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#2c5a71"
+            }
+        ]
+    }
+];
+    
     // Constructor creates a new map: only center and zoom are required
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 40.741359, lng: -73.9980244},
         // zoom range up to 21
         zoom: 13,
+        styles: styles,
         mapTypeControl: false
     });
     // These are the real estate listings that will be shown to the user.
@@ -25,6 +132,13 @@ function initMap() {
     ];
     
     var largeInfoWindow = new google.maps.InfoWindow();
+    
+    // Style the markers. This will be our listimg marker icon.
+    var defaultIcon = makeMarkerIcon('0091ff');
+    
+    // Create a "highlighted location" marker color for when the user mouses over the marker
+    var highlightedIcon = makeMarkerIcon('FFFF24');
+    
     // The following group uses the location array to create an array of markers on initialize.
     for (var i = 0; i < locations.length; i++) {
         // Get the position and title from the location array
@@ -79,5 +193,16 @@ function initMap() {
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
         }
+    }
+    
+    function makeMarkerIcon(markerColor) {
+        var markerImage = new google.maps.MarkerImage(
+            'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|' + markerColor + 
+            '|40|_|%E2%80%A2',
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(10, 34),
+            new google.maps.Size(21, 34));
+        return markerImage;
     }
 }
