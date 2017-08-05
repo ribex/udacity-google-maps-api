@@ -1,5 +1,5 @@
 // https://classroom.udacity.com/courses/ud864
-
+/*global google*/
 var map;
 function initMap() {
     // Constructor creates a new map: only center and zoom are required
@@ -14,6 +14,11 @@ function initMap() {
         map: map,
         title: 'First Marker!'
     });
-    
-    
+    var infowindow = new google.maps.InfoWindow({
+        content: 'Do you ever feel like an InfoWindow, floating through the wind,' +
+        ' ready to start again?'
+    });
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
+    })
 }
