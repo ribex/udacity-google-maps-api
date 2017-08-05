@@ -1,6 +1,10 @@
 // https://classroom.udacity.com/courses/ud864
 /*global google*/
 var map;
+
+// Create a new blank array for all the listing markers
+var markers = [];
+
 function initMap() {
     // Constructor creates a new map: only center and zoom are required
     map = new google.maps.Map(document.getElementById('map'), {
@@ -8,20 +12,6 @@ function initMap() {
         // zoom range up to 21
         zoom: 13
     });
-    // var tribeca = {lat: 40.719526, lng: -74.0089934};
-    // var marker = new google.maps.Marker({
-    //     position: tribeca,
-    //     map: map,
-    //     title: 'First Marker!'
-    // });
-    // var infowindow = new google.maps.InfoWindow({
-    //     content: 'Do you ever feel like an InfoWindow, floating through the wind,' +
-    //     ' ready to start again?'
-    // });
-    // marker.addListener('click', function() {
-    //     infowindow.open(map, marker);
-    // });
-    
     // These are the real estate listings that will be shown to the user.
     // Normally we'd have these in a database instead.
     var locations = [
@@ -32,4 +22,28 @@ function initMap() {
         {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
         {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}        
     ];
+    
+    var largeInfoWindow = new google.maps.InfoWindow();
+    
+    // The following group uses the location array to create an array of markers on initialize.
+    for (var i = 0; i < locations.length; i++) {
+        // Get the position and title from the location array
+        var position = locations[i].location;
+        var title = locations[i].title;
+        // Create one marker per location, and put into markers array
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position,
+            title: title,
+            animation: google.maps.Animation.DROP,
+            id: i
+        });
+        // Push the marker to our array of markers
+        markers.push(marker);
+        // Create an onclick event to open an infowindow at each marker
+        marker.addListener('click', function() {
+            populateInfoWindow(this, largeInfoWindow);
+        });
+    }
+    
 }
