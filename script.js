@@ -46,4 +46,20 @@ function initMap() {
         });
     }
     
+    // This function populates the infowindow when the marker is clicked. We'll
+    // only allow one infowindow which will open at the marker that is clicked,
+    // and populate based on that marker's position
+    function populateInfoWindow(marker, infoWindow) {
+        // Check to make sure the infowindow is not already opened on this marker
+        if (infoWindow.marker != marker) {
+            infoWindow.marker = marker;
+            infoWindow.setContent('<div>' + marker.title + '</div>');
+            infoWindow.open(map, marker);
+            // Make sure the marker property is cleared if the infowindow is closed
+            infoWindow.addListener('closeclick', function() {
+                infoWindow.marker = null;
+            });
+        }
+    }
+    
 }
