@@ -148,6 +148,7 @@ function initMap() {
         var marker = new google.maps.Marker({
             position: position,
             title: title,
+            icon: defaultIcon,
             animation: google.maps.Animation.DROP,
             id: i
         });
@@ -156,6 +157,14 @@ function initMap() {
         // Create an onclick event to open an infowindow at each marker
         marker.addListener('click', function() {
             populateInfoWindow(this, largeInfoWindow);
+        });
+        // Two event listeners: one for mouseover, other for mouseout,
+        // to change the colors back and forth
+        marker.addListener('mouseover', function() {
+            this.setIcon(highlightedIcon);
+        });
+        marker.addListener('mouseout', function() {
+           this.setIcon(defaultIcon); 
         });
     }
     
