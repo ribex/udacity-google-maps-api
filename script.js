@@ -82,6 +82,18 @@ function initMap() {
         ]
     },
     {
+        "featureType": "administrative.neighborhood",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "color": "#f4dc42"
+            },
+            {
+                "weight": .5
+            }
+        ]
+    },    
+    {
         "featureType": "administrative",
         "elementType": "geometry",
         "stylers": [
@@ -106,7 +118,7 @@ function initMap() {
         "elementType": "geometry",
         "stylers": [
             {
-                "color": "#2c5a71"
+                "color": "#297c16"
             }
         ]
     }
