@@ -145,6 +145,18 @@ function initMap() {
 		
 		var largeInfoWindow = new google.maps.InfoWindow();
 		
+		// Initialize the drawing manager
+		var drawingManager = new google.maps.drawing.DrawingManager({
+			drawingMode: google.maps.drawing.OverlayType.POLYGON,
+			drawingControl: true,
+				drawingControlOptions: {
+					position: google.maps.ControlPosition.TOP_LEFT,
+					drawingmodes: [
+						google.maps.drawing.OverlayType.POLYGON
+					]
+				}
+		});
+		
 		// Style the markers. This will be our listimg marker icon.
 		var defaultIcon = makeMarkerIcon('0091ff');
 		
@@ -182,6 +194,10 @@ function initMap() {
 		
 		document.getElementById('show-listings').addEventListener('click', showListings);
 		document.getElementById('hide-listings').addEventListener('click', hideListings);
+		
+		document.getElementById('toggle-drawing').addEventListener('click', function() {
+			toggleDrawing(drawingManager);
+		})
 		
 		// This function populates the infowindow when the marker is clicked. We'll
 		// only allow one infowindow which will open at the marker that is clicked,
@@ -260,5 +276,14 @@ function initMap() {
 						new google.maps.Point(10, 34),
 						new google.maps.Size(21, 34));
 				return markerImage;
+		}
+		
+		// This shows and hides (respectively) the drawing options
+		function toggleDrawing(drawingManager) {
+			if (drawingManager.map) {
+				drawingManager.setMap(null);
+			} else {
+				drawingManager.setMap(map);
+			}
 		}
 }
