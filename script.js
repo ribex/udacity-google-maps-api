@@ -5,6 +5,9 @@ var map;
 // Create a new blank array for all the listing markers
 var markers = [];
 
+// This global polygon variable is to ensure only ONE polygon is rendered
+var polygon = null;
+
 function initMap() {
 		// Create a styles array to use with the map
 		var styles = [
@@ -197,7 +200,29 @@ function initMap() {
 		
 		document.getElementById('toggle-drawing').addEventListener('click', function() {
 			toggleDrawing(drawingManager);
-		})
+		});
+		
+		// Add an event listener so that after the polygon is captured the 
+		// searchWithinPolygon function is called. This will show the markers in
+		// the polygon, and hide any outside of it
+		drawingManager.addListener('overlaycomplete', function(event) {
+			// First, check if there is an existing polygon. If there is, 
+			// get rid of it and remove the markers
+			if (polygon) {
+				polygon.setMap(null);
+				hideListings;
+			}
+			// Switching the drawing mode to the "hand" (i.e. no longer drawing)
+			drawingManager.setDrawingMode(null);
+			// Creating a new editable polygon from the overlay
+			polygon = event.overlay;
+			polygon.setEditable(true);
+			// Searching within the polygon
+			searchWithinPolygon();
+			// Make sure the search is re-done if the poly is changed
+			polygon.getPath().addListener('set_at', searchWithinPolygon);
+			polygon.getPath().addListener('insert_at', searchWithinPolygon);
+		});
 		
 		// This function populates the infowindow when the marker is clicked. We'll
 		// only allow one infowindow which will open at the marker that is clicked,
@@ -282,8 +307,25 @@ function initMap() {
 		function toggleDrawing(drawingManager) {
 			if (drawingManager.map) {
 				drawingManager.setMap(null);
+				// In case the user drew anything, get rid of the polygon
+				if (polygon) {
+					polygon.setMap(null);
+				}
 			} else {
 				drawingManager.setMap(map);
 			}
 		}
+		
+		// This function hides all markers outside the polygon, and shows only the ones
+		// within it. This is so that the user can specify an exact area of search.
+		function searchWithinPolygon() {
+			for (var i = 0; i < markers.length; i++) {
+				if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
+					markers[i].setMap(map);
+				} else {
+					markers[i].setMap(null);
+				}
+			}
+		}
+		
 }
