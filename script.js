@@ -217,6 +217,8 @@ function initMap() {
 			// Creating a new editable polygon from the overlay
 			polygon = event.overlay;
 			polygon.setEditable(true);
+			console.log("polygon:");
+			console.log(polygon.getPath());
 			// Searching within the polygon
 			searchWithinPolygon();
 			// Make sure the search is re-done if the poly is changed
